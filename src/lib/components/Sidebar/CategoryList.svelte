@@ -4,10 +4,8 @@
   export let tools;
 </script>
 
-<div class="my-2 pl-4 pr-2">
-  <ul>
-    {#each tools as tool}
-      <CategoryListItem {tool} />
-    {/each}
-  </ul>
-</div>
+<ul class="mt-2 px-2">
+  {#each tools as tool (tool.name)}
+    <CategoryListItem {tool} />
+  {/each}
+</ul>
