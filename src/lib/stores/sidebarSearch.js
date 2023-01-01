@@ -20,6 +20,3 @@ export const searchHandler = store => {
     return item.name.toLowerCase().includes(searchTerm);
   });
 };
-
-export const search = writable("");
-// export const filteredTools = writable([]);

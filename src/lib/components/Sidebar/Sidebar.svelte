@@ -1,10 +1,10 @@
 <script>
   import Category from "./Category.svelte";
   import CategoryList from "./CategoryList.svelte";
-  import SearchBar from "./SearchBar.svelte";
   import Settings from "./Settings.svelte";
   import { sidebarState } from "../../stores/sidebarState";
-  import { search } from "../../stores/sidebarSearch";
+  import { createSearchStore, searchHandler } from "../../stores/sidebarSearch";
+  import { onDestroy } from "svelte";
 
   export let categories, tools, wordsLeft;
 
@@ -14,6 +14,14 @@
       tools: tools.filter(tool => tool.category === category.name),
     };
   });
+
+  const searchStore = createSearchStore(tools);
+
+  const unsubscribe = searchStore.subscribe(model => searchHandler(model));
+
+  onDestroy(() => {
+    unsubscribe();
+  });
 </script>
 
 <div
@@ -22,11 +30,14 @@
   }`}
 >
   <div class="mb-4">
-    <h2 class="mb-4 text-2xl font-semibold cursor-pointer hidden lg:block">
+    <a
+      href="/"
+      class="mb-4 text-2xl font-semibold cursor-pointer hidden lg:block"
+    >
       TextmateAi
-    </h2>
+    </a>
     <div class="mb-4">
-      <div class="cursor-pointer flex items-center">
+      <a href="/" class="cursor-pointer flex items-center">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -42,21 +53,42 @@
           />
         </svg>
         <span>Dashboard</span>
-      </div>
+      </a>
     </div>
-    <SearchBar />
+    <!-- TODO: export to a search bar component, not doing it now because this store cant be used across multiple components becuase it is created here -->
+    <div class="flex items-center border-2 rounded-md p-2 shadow-sm bg-white">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="h-5 min-h-[1.25rem] w-5 min-w-[1.25rem] mr-2"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
+        />
+      </svg>
+      <input
+        type="text"
+        placeholder="Find a tool"
+        bind:value={$searchStore.search}
+        class="w-full outline-none"
+      />
+    </div>
   </div>
   <div class="flex h-0 flex-1 flex-col justify-between">
     <div class="flex-1 overflow-y-auto mb-4">
-      {#if $search === ""}
+      {#if $searchStore.search === ""}
         <div class="space-y-2">
           {#each groups as group (group.category.name)}
             <Category {group} />
           {/each}
         </div>
       {:else}
-        <!-- <CategoryList tools={filteredTools} /> -->
-        <p>Searching...</p>
+        <CategoryList tools={$searchStore.filtered} />
       {/if}
     </div>
     <Settings {wordsLeft} />

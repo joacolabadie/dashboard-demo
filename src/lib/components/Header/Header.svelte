@@ -38,5 +38,5 @@
       />
     </svg>
   {/if}
-  <h2 class="text-2xl font-semibold cursor-pointer">TextmateAi</h2>
+  <a href="/" class="text-2xl font-semibold cursor-pointer">TextmateAi</a>
 </div>
