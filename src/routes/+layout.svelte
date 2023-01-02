@@ -17,4 +17,8 @@
   });
 </script>
 
+<svelte:head>
+  <title>Textmate AI</title>
+</svelte:head>
+
 <slot />

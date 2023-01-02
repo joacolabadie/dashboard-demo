@@ -1,4 +1,5 @@
 <script>
+  import { enhance } from "$app/forms";
   import Output from "$lib/components/AI/Output.svelte";
 
   /** @type {import('./$types').PageData} */
@@ -19,16 +20,17 @@
     <form
       method="POST"
       action="?/generate"
+      use:enhance
       class="space-y-8 w-full max-w-2xl px-4"
     >
-      <div class="flex flex-col">
+      <div class="flex flex-col font-normal">
         <label for="text" class="mb-2">{data.tool.label}</label>
         <textarea
           name="text"
-          placeholder="Example: ..."
+          placeholder="Example"
           required
           rows="5"
-          class="rounded-md border-2 p-2 shadow-sm outline-none placeholder:text-gray-400 resize-y"
+          class="rounded-md border-2 p-2 shadow-sm outline-none placeholder:text-gray-400 resize-y focus:border-gray-400"
         />
       </div>
       <button type="submit" class="w-full p-2 border-2 shadow-sm rounded-md"

@@ -59,7 +59,6 @@ export const actions = {
 
     console.log("FORM SERVER", data.choices);
 
-    // TODO: find a better way to get all words
     let words = 0;
 
     data.choices.forEach(choice => {

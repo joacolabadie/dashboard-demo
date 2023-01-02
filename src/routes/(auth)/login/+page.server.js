@@ -14,13 +14,35 @@ export async function load(event) {
 /** @type {import('./$types').Actions} */
 export const actions = {
   login: async event => {
+    const provider = event.url.searchParams.get("provider");
+
+    if (provider) {
+      const { data, error: err } = await event.locals.sb.auth.signInWithOAuth({
+        provider,
+      });
+
+      if (err) {
+        return fail(400, {
+          error: "Something went wrong",
+        });
+      }
+
+      console.log(data);
+
+      throw redirect(303, data.url);
+    }
+
     const body = Object.fromEntries(await event.request.formData());
 
     // TODO: form validation
 
-    const { error: err } = await event.locals.sb.auth.signInWithPassword({
+    // const { error: err } = await event.locals.sb.auth.signInWithPassword({
+    //   email: body.email,
+    //   password: body.password,
+    // });
+
+    const { error: err } = await event.locals.sb.auth.signInWithOtp({
       email: body.email,
-      password: body.password,
     });
 
     if (err) {
@@ -39,6 +61,6 @@ export const actions = {
       });
     }
 
-    throw redirect(303, "/");
+    return { success: true };
   },
 };

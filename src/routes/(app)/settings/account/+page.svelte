@@ -1,11 +1,11 @@
 <div class="p-4 text-sm font-medium w-fit space-y-4">
   <div>
-    <h3 class=" text-xl mb-2">Account</h3>
+    <h3 class="text-xl mb-2">Account</h3>
     <p class=" font-normal">Manage your personal information and settings.</p>
   </div>
   <div class="border-b-2" />
   <div>
-    <h3 class=" text-xl mb-2">Logout</h3>
+    <h3 class="text-xl mb-2">Logout</h3>
     <form method="POST" action="?/logout">
       <button
         type="submit"

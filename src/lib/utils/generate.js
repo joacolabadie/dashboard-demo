@@ -16,7 +16,7 @@ export const generate = async (prompt, temperature) => {
       prompt: prompt + "\n\n",
       max_tokens: 256,
       temperature,
-      n: 2,
+      // n: 2,
     }),
   });
 
