@@ -13,9 +13,10 @@ export const generate = async (prompt, temperature) => {
     },
     body: JSON.stringify({
       model: "text-davinci-003",
-      prompt,
+      prompt: prompt + "\n\n",
       max_tokens: 256,
       temperature,
+      n: 2,
     }),
   });
 

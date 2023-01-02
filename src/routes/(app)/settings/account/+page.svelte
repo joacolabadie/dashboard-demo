@@ -1,0 +1,32 @@
+<div class="p-4 text-sm font-medium w-fit space-y-4">
+  <div>
+    <h3 class=" text-xl mb-2">Account</h3>
+    <p class=" font-normal">Manage your personal information and settings.</p>
+  </div>
+  <div class="border-b-2" />
+  <div>
+    <h3 class=" text-xl mb-2">Logout</h3>
+    <form method="POST" action="?/logout">
+      <button
+        type="submit"
+        class="flex cursor-pointer items-center border-2 rounded-md w-fit p-2"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke-width="1.5"
+          stroke="currentColor"
+          class="h-5 min-h-[1.25rem] w-5 min-w-[1.25rem] mr-2"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75"
+          />
+        </svg>
+        Logout
+      </button>
+    </form>
+  </div>
+</div>

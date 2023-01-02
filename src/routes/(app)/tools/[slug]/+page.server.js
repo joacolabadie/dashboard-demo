@@ -10,10 +10,8 @@ export async function load(event) {
     throw redirect(303, "/login");
   }
 
-  // TODO: add error handling
-
   const getTool = async () => {
-    const { data: tool, error: err } = await supabaseClient
+    const { data: tool } = await supabaseClient
       .from("tools")
       .select("*")
       .eq("slug", event.params.slug);
@@ -29,21 +27,25 @@ export async function load(event) {
 /** @type {import('./$types').Actions} */
 export const actions = {
   generate: async event => {
-    // TODO: add security on submit check session
     // TODO: prevent waterfall request, make them at the same time
-    // TODO: select only needed columns
-    // TODO: add error handling
+    // TODO: add form validation
 
     const body = Object.fromEntries(await event.request.formData());
 
     const { session, supabaseClient } = await getSupabase(event);
 
+    if (!session) {
+      return redirect(303, "/login");
+    }
+
     const { data: tool } = await supabaseClient
       .from("tools")
-      .select("*")
+      .select("prompt, temperature")
       .eq("slug", event.params.slug);
 
-    const { data: user } = await supabaseClient.from("profiles").select("*");
+    const { data: user } = await supabaseClient
+      .from("profiles")
+      .select("words_left");
 
     if (user[0].words_left <= 0) {
       return fail(400, {
@@ -55,13 +57,20 @@ export const actions = {
 
     const data = await generate(prompt, tool[0].temperature);
 
-    // TODO: is passing the id to update necessary? in select it isnt
-    if (user[0].words_left - data.choices[0].text.split(" ").length > 0) {
+    console.log("FORM SERVER", data.choices);
+
+    // TODO: find a better way to get all words
+    let words = 0;
+
+    data.choices.forEach(choice => {
+      words = words + choice.text.split(" ").length;
+    });
+
+    if (user[0].words_left - words > 0) {
       const { error: err } = await supabaseClient
         .from("profiles")
         .update({
-          words_left:
-            user[0].words_left - data.choices[0].text.split(" ").length,
+          words_left: user[0].words_left - words,
         })
         .eq("id", event.locals.session.user.id);
     } else {
@@ -73,6 +82,6 @@ export const actions = {
         .eq("id", event.locals.session.user.id);
     }
 
-    return { success: true, aiOutput: data.choices[0].text };
+    return { success: true, aiOutput: data.choices };
   },
 };

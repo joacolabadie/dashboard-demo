@@ -11,7 +11,7 @@
     <span>Words: {wordsLeft}/1000</span>
     <div class="bg-gray-200 mt-2 rounded-md">
       <div
-        class="h-2 bg-green-400 rounded-md"
+        class="h-2 bg-gray-400 rounded-md"
         style={`width: ${wordsLeftPercentage}%;`}
       />
     </div>
@@ -33,7 +33,7 @@
     </svg>
     <span>Send feedback</span>
   </div>
-  <div class="cursor-pointer flex items-center">
+  <a href="/settings/account" class="cursor-pointer flex items-center">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -54,5 +54,5 @@
       />
     </svg>
     <span>Settings</span>
-  </div>
+  </a>
 </div>

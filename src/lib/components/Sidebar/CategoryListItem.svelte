@@ -1,11 +1,23 @@
 <script>
+  import { page } from "$app/stores";
+
   export let tool;
+
+  let active = false;
+
+  $: if ($page.params.slug === tool.slug) {
+    active = true;
+  } else {
+    active = false;
+  }
 </script>
 
 <li>
   <a
     href={`/tools/${tool.slug}`}
-    class="flex items-center justify-between hover:bg-gray-200 rounded-md p-1 cursor-pointer"
+    class={`flex items-center justify-between hover:bg-gray-200 rounded-md p-1 cursor-pointer font-normal ${
+      active ? "bg-gray-300" : ""
+    }`}
   >
     <span class="truncate">{tool.name}</span>
     <svg

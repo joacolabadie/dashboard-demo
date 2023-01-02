@@ -9,28 +9,26 @@ export async function load(event) {
     throw redirect(303, "/login");
   }
 
-  // TODO: should check session here, or not necessary ?
-  // TODO: add error handling
-  // TODO: send only the needed columns from the table
-
   const getCategories = async () => {
-    const { data: categories, error: err } = await supabaseClient
+    const { data: categories } = await supabaseClient
       .from("categories")
-      .select("*");
+      .select("name")
+      .order("name", { ascending: true });
 
     return categories;
   };
 
   const getTools = async () => {
-    const { data: tools, error: err } = await supabaseClient
+    const { data: tools } = await supabaseClient
       .from("tools")
-      .select("*");
+      .select("category, name, slug")
+      .order("name", { ascending: true });
 
     return tools;
   };
 
   const getWordsLeft = async () => {
-    const { data: wordsLeft, error: err } = await supabaseClient
+    const { data: wordsLeft } = await supabaseClient
       .from("profiles")
       .select("words_left");
 
