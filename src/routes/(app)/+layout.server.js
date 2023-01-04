@@ -27,17 +27,20 @@ export async function load(event) {
     return tools;
   };
 
-  const getWordsLeft = async () => {
-    const { data: wordsLeft } = await supabaseClient
+  const getProfile = async () => {
+    const { data: profile } = await supabaseClient
       .from("profiles")
       .select("words_left");
 
-    return wordsLeft[0].words_left;
+    // return wordsLeft[0].words_left;
+    return profile[0];
   };
 
   return {
     categories: getCategories(),
     tools: getTools(),
-    wordsLeft: getWordsLeft(),
+    profile: getProfile(),
   };
 }
+
+// TODO: insetad of passing data here, just get it in the components with $page

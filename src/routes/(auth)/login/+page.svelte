@@ -3,6 +3,9 @@
 
   /** @type {import('./$types').ActionData} */
   export let form;
+  console.log(form);
+
+  let loading = false;
 </script>
 
 <div
@@ -13,7 +16,7 @@
     <form method="POST" use:enhance class="flex flex-col space-y-4">
       <button
         formaction="?/login&provider=google"
-        class="rounded-md border-2 border-gray-200 p-2 shadow-sm flex justify-center"
+        class="rounded-md border-2 disabled:cursor-not-allowed border-gray-200 p-2 shadow-sm flex justify-center"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -42,7 +45,7 @@
       >
       <button
         formaction="?/login&provider=github"
-        class="rounded-md border-2 border-gray-200 p-2 shadow-sm flex justify-center"
+        class="rounded-md border-2 disabled:cursor-not-allowed border-gray-200 p-2 shadow-sm flex justify-center"
         ><svg
           xmlns="http://www.w3.org/2000/svg"
           xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -82,7 +85,20 @@
       <span>Or sign in with your email</span>
       <div class="border-b-2 flex-1" />
     </div>
-    <form method="POST" action="?/login" use:enhance class="space-y-4">
+    <form
+      method="POST"
+      action="?/login"
+      use:enhance={({ form }) => {
+        loading = true;
+
+        return async () => {
+          form.reset();
+
+          loading = false;
+        };
+      }}
+      class="space-y-4"
+    >
       <div class="flex flex-col">
         <label for="email" class="mb-2">
           <span>Email</span>
@@ -92,11 +108,14 @@
           name="email"
           required
           placeholder="name@example.com"
-          class="rounded-md border-2 border-gray-200 p-2 shadow-sm outline-none"
+          class="rounded-md border-2 border-gray-200 p-2 shadow-sm outline-none focus:border-gray-400"
         />
       </div>
       <div>
-        <button type="submit" class=" rounded-md border-2  p-2 w-full"
+        <button
+          type="submit"
+          disabled={loading}
+          class=" rounded-md border-2 disabled:cursor-not-allowed p-2 w-full"
           >Continue with Email</button
         >
       </div>
@@ -110,3 +129,5 @@
 </div>
 
 <!-- FIXME: after loggin in with oauth the user sees this page before being redirected to the dashboard, the user is already logged in but can still interact with this page -->
+
+<!-- TODO: disable on loading -->

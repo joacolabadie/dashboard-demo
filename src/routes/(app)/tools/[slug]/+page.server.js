@@ -32,6 +32,8 @@ export const actions = {
 
     const body = Object.fromEntries(await event.request.formData());
 
+    // console.log(event);
+
     const { session, supabaseClient } = await getSupabase(event);
 
     if (!session) {
@@ -53,11 +55,23 @@ export const actions = {
       });
     }
 
-    const prompt = tool[0].prompt + " " + body.text;
+    console.log(body);
+
+    let string = "";
+
+    for (const key in body) {
+      string = string + `${key}: ${body[key]}` + ". ";
+      // console.log(`${key}: ${body[key]}`);
+    }
+    // console.log(string);
+
+    const prompt = tool[0].prompt + " " + string;
+
+    console.log(prompt);
 
     const data = await generate(prompt, tool[0].temperature);
 
-    console.log("FORM SERVER", data.choices);
+    // console.log("FORM SERVER", data.choices);
 
     let words = 0;
 
@@ -82,5 +96,6 @@ export const actions = {
     }
 
     return { success: true, aiOutput: data.choices };
+    // return { success: true };
   },
 };

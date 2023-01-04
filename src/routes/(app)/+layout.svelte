@@ -4,16 +4,18 @@
 
   /** @type {import('./$types').LayoutData} */
   export let data;
+  // console.log(data);
 </script>
 
-<main>
+<main class=" h-screen">
   <Sidebar
     categories={data.categories}
     tools={data.tools}
-    wordsLeft={data.wordsLeft}
+    wordsLeft={data.profile.words_left}
+    favoriteTools={data.profile.fav}
   />
   <Header />
-  <div class="lg:ml-64">
+  <div class="lg:ml-64 lg:h-full h-[calc(100%-3.5rem)]">
     <slot />
   </div>
 </main>

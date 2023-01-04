@@ -6,7 +6,19 @@
   import { createSearchStore, searchHandler } from "../../stores/sidebarSearch";
   import { onDestroy } from "svelte";
 
-  export let categories, tools, wordsLeft;
+  export let categories, tools, wordsLeft, favoriteTools;
+
+  // let favoriteTools;
+
+  let favorite = {
+    category: { name: "Favorite tools" },
+    tools: favoriteTools?.map(favTool => {
+      const foundTool = tools.find(tool => tool.name === favTool);
+      return foundTool;
+    }),
+  };
+
+  console.log(favorite);
 
   const groups = categories.map(category => {
     return {
@@ -83,6 +95,7 @@
     <div class="flex-1 overflow-y-auto mb-4">
       {#if $searchStore.search === ""}
         <div class="space-y-2">
+          <!-- <Category group={favorite} /> -->
           {#each groups as group (group.category.name)}
             <Category {group} />
           {/each}
